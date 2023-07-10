@@ -1,4 +1,4 @@
-# Kubernetes Commands and Files
+# CKA commands and files
 
 ### This repository contains various commands and concepts to work with kubernetes
 

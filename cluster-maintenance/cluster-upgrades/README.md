@@ -1,6 +1,6 @@
-# Kubernetes Commands and Files
+# CKA commands and files
 
-### This repository contains various commands to work with kubernetes
+
 
 ### Cluster Upgrade
 
