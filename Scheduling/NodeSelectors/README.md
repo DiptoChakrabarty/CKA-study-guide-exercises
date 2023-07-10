@@ -1,8 +1,6 @@
 # CKA commands and files
 
-
-
-### NodeSelectors
+## NodeSelectors
 
 - Label a Node
 

@@ -1,8 +1,6 @@
 # CKA commands and files
 
-
-
-### NodeAffinity
+## NodeAffinity
 
 - Types of NodeAffinity
 
