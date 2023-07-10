@@ -1,5 +1,14 @@
 # Advanced Kubectl commands
 
+## Aliases for the exam
+```
+export do='--dry-run=client -o yaml'
+export now='--force --grace-period 0'
+export yl='-o yaml'
+export kn='-n kube-system'
+
+```
+
 - Get json values
 ```
 kubectl get nodes -o json
