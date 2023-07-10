@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: database-ingress-policy
+spec:
+  podSelector:
+    matchLabels:
+      role: database
+  policyTypes:
+  - Egress
+  egress:
+    - to:
+      - podSelector:
+          matchLabels:
+            type: backend-api
+      ports:
+        - protocol: TCP
+          port: 3306

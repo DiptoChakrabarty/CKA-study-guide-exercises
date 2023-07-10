@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginxrc
+  labels:
+    app: webapp
+    tier: dev
+sepc:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: dev
+      app: webapp
+  template:
+    metadata:
+      labels:
+        tier: dev
+        app: webapp
+    spec:
+      containers:
+      - name: nginxrc
+        image: nginx

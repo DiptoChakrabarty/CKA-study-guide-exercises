@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+  namespace: database
+spec:
+  containers:
+    - name: redis
+      image: redis
+
+# Launch pod named redis in namespace database

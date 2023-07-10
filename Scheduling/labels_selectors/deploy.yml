@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver
+  labels:
+    app: webservice
+    tier: server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+        app: webservice
+        tier: server
+  template:
+    metadata:
+        labels:
+          app: webservice
+          tier: server
+    spec:
+        containers:
+          - name: webservice
+            image: nginx:latest

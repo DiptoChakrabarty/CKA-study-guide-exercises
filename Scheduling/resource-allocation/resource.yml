@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: proxy-nginx
+  labels:
+    app: proxy-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: proxy-nginx
+  template:  
+    metadata:
+      labels: 
+        app: proxy-nginx
+    spec:
+      containers:
+        - name: proxy-nginx
+          image: nginx
+          ports: 
+            - containerPort: 80          
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "128Mi"
+        limits:
+          cpu: "1000m"
+          memory: "500Mi"

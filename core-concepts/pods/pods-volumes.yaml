@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginxpod
+  labels:
+    type: webapp
+spec:
+  containers:
+    - image: nginx:1.13
+      name: nginx-pod
+      ports:
+      - containerPort: 80
+      volumeMounts:
+        - mountPath: /var/log/access.log
+          name: log-volume-mount
+  volumes:
+    - name: log-volume-mount
+      hostPath:
+        path: /var/log/nginxlog
+        type: DirectoryOrCreate
+      

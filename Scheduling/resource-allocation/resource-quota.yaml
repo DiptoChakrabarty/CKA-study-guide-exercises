@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: resource
+spec:
+  hard:
+    requests:
+      cpu: 500m
+      memory: 100Mib
+    limits:
+      cpu: 1000m
+      memory: 600Mib

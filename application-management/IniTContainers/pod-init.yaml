@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: red
+  namespace: default
+spec:
+  initContainers:
+  - name: redinit
+    image: busybox
+    command:
+    - sh
+    - -c
+    - sleep 20
+  containers:
+  - command:
+    - sh
+    - -c
+    - echo The app is running! && sleep 3600
+    image: busybox:1.28
+    imagePullPolicy: IfNotPresent
+    name: red-container

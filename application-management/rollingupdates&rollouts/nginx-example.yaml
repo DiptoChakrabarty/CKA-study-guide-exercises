@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-prod
+  labels:
+    app: nginx
+    tier: prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+      tier: prod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1/25%
+      maxUnavailable: 0/10%
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: prod
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
