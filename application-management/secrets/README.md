@@ -58,7 +58,11 @@ Ensure that the changes are propagated to the running Pods using the Secret with
 Write the imperative command or YAML manifest to update the 'database-creds' Secret and apply the changes to the running Pods.
 ```
 
-```
+<details><summary>show</summary>
+<p>
+    
+```bash
+
 # Create a new Secret
 kubectl create secret generic database-creds --from-literal=username=dbuser --from-literal=password=newpassword --dry-run=client -o yaml > updated-secret.yaml
 
@@ -66,4 +70,8 @@ kubectl create secret generic database-creds --from-literal=username=dbuser --fr
 kubectl apply -f updated-secret.yaml
 
 # The changes will automatically propagate to the running Pods using the Secret
+
 ```
+
+</p>
+</details>
