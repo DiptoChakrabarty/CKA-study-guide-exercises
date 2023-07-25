@@ -6,9 +6,9 @@ spec:
   storageClassName: manual
   persistentVolumeReclaimPolicy: Retain
   capacity:
-    storage: 1Gi #Size of the volume
+    storage: 1Gi
   accessModes:
-    - ReadWriteOnce #type of access
+    - ReadWriteOnce
   hostPath:
     path: "/mnt/data" 
 ---
@@ -30,8 +30,8 @@ metadata:
   name: webapp
 spec:
   containers:
-    - name: event-simulator
-      image: kodekloud/event-simulator
+    - name: webapp
+      image: busybox
       env:
         - name: LOG_HANDLERS
           value: file
