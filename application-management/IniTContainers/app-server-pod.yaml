@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-server-pod
+spec:
+  containers:
+  - name: app-server
+    image: app-image:latest
+    # Add your app-server container configuration here
+  initContainers:
+  - name: config-init
+    image: busybox
+    command: ["sh", "-c", "cp /config/* /app-config/ && echo 'Configuration files copied successfully.'"]
+    volumeMounts:
+    - name: config-volume
+      mountPath: /config
+    - name: app-config-volume
+      mountPath: /app-config
+  volumes:
+  - name: config-volume
+    # Add your ConfigMap volume configuration here
+  - name: app-config-volume
+    emptyDir: {}
