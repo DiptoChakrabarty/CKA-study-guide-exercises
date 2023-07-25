@@ -18,58 +18,48 @@ kubectl auth can-i create deployments --as dev-user
 kubectl get clusterrolebindings --no-headers | wc -l
 ```
 
+## QUestions and Solutions
 
-## Kops
+- Solution in pinku-user.yaml
+```
+You have been assigned the task of setting up Role-Based Access Control (RBAC) for the user 'pinku' within the 'argo' namespace of your Kubernetes cluster. The user 'pinku' requires specific access rights to manage resources within this namespace.
 
-## Generate Certificate
+Create a Role named 'pinku-role' in the 'argo' namespace with the following permissions:
 
-```sh
-
-- openssl genrsa -out developer.key 2048  # create pvt key for user
-
-- openssl req -new -key developer.key -out req.csr -subj "/CN=developer/O=developer"
-
-- get kubernetes pvt key and certificate
-
-- openssl x509 -req -in req.csr -CA kube.crt -CAkey kube.key  -CAcreateserial -out developer.crt -days 365
-
+API groups: [""], ["apps"], ["extensions"]
+Resources: ["pods"], ["deployments"], ["services"], ["ingress"]
+Verbs: ["get"], ["watch"], ["list"]
+Bind the Role 'pinku-role' to the user 'pinku' within the 'argo' namespace using a RoleBinding named 'pinku-role-binding'.
 
 ```
 
-## Add cluster context 
-```sh
-- kubectl config set-cluster {{ cluster name }} --server= {{ loadbalancer/master url }}
+- Solution using imperative commands
 
--  kubectl config set-context mycontext --user developer --cluster {{ cluster name }} 
+<details><summary>show</summary>
+<p>
+    
+```bash
+# Step 1: Create the 'pinku-role' Role in the 'argo' namespace
+kubectl create role pinku-role --namespace=argo \
+  --verb=get,watch,list \
+  --resource=pods,deployments,services,ingress
 
-- kubectl config use-context mycontext
+# Step 2: Bind the 'pinku-role' Role to the 'pinku' user within the 'argo' namespace using RoleBinding
+kubectl create rolebinding pinku-role-binding --namespace=argo \
+  --role=pinku-role \
+  --user=pinku
 
-- kubectl config set-credentials developer --client-certificate= {{ users certificate}} --client-key= {{ users key }} 
-
-- kubectl config set-cluster kopsdemo.k8s.local --certificate-authority= {{kubernetes certificate  }}
-
+# Step 3: Test if access is working fine
+kubectl auth can-i get pods --namespace argo --as pinku
+kubectl auth can-i list services --namespace argo --as pinku
+kubectl auth can-i watch deployments --namespace argo --as pinku
+kubectl auth can-i create ingress --namespace argo --as pinku
 ```
 
+</p>
+</details>
 
-## MiniKube
-
-## Generate Certificates
-
-```sh
-
-- Create a certificate and key pair for user pinku
-
-- openssl genrsa -out pinku.key 2048  (private key)
-
-- openssl req -new -key pinku.key -out pinku.csr -subj "/CN=pinku/O=argo" (certificate signing request)
-
-- Sign pinkus certificatew with the cluster crt and key which is in /etc/kubernetes/pki or .minikube folder
-
-- openssl x509 -req -in pinku.csr -CA ${HOME}/.minikube/ca.crt -CAkey ${HOME}/.minikube/ca.key -CAcreateserial -out pinku.crt -days 45  
-
-```
-
-#### User Creates Own KubeConfig
+### User Creates Own KubeConfig
 
 ```sh
 - kubectl --kubeconfig {kubeconfig filename} config set-cluster {cluster name} --server {server url} --certificate-authority=${HOME}/.minikube/ca.crt (create kubeconfig)
@@ -85,17 +75,4 @@ kubectl get clusterrolebindings --no-headers | wc -l
   kubectl --kubeconfig pinku.kubeconfig  config set-context pinku-kube --cluster  minikube --namespace argo --user pinku  (attach context and namespace)
 
 - Check using kubectl --kubeconfig {kubeconfig filename} get pods
-```
-
-#### Admin Creates KubeConfig
-
-```sh
-- Edit Original Admin KubeConfig
-
-- Replace Values in context user and namespace
-
-- In client certificate and key add users client and key directly
-
-- cat {user crt} | base64 -w0  (encode crt to base64 and avoid linewrap)
-
 ```

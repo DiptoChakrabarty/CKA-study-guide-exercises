@@ -1,9 +1,0 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  namespace: argo
-  name: pinku-role
-rules:
-  - apiGroups: ["","apps","extensions"]
-    resources: ["pods","deployments","services","ingress"]
-    verbs: ["get","watch","list"]
