@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dbvol
+spec:
+  storageClassName: manual
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data" 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: dbvol
+spec:
+    storageClassName: manual
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 0.5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+spec:
+  containers:
+    - name: webapp
+      image: busybox
+      env:
+        - name: LOG_HANDLERS
+          value: file
+      volumeMounts:
+        - name: log-vol
+          mountPath: /log
+  volumes:
+    - name: log-vol
+      persistentVolumeClaim:
+        claimName: dbvol

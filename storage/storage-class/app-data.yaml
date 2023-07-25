@@ -1,0 +1,50 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast-storage
+provisioner: your-provisioner
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-data-pvc
+spec:
+  storageClassName: fast-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: app-data-statefulset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-data
+  serviceName: app-data
+  template:
+    metadata:
+      labels:
+        app: app-data
+    spec:
+      containers:
+      - name: app-container
+        image: your-app-image:latest
+        env:
+        - name: DATA_PATH
+          value: "/data"
+        volumeMounts:
+        - name: app-data-volume
+          mountPath: "/data"
+      volumes:
+      - name: app-data-volume
+        persistentVolumeClaim:
+          claimName: app-data-pvc
