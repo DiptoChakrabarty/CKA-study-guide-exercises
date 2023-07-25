@@ -11,7 +11,7 @@
 kubectl get netpol
 ```
 
-## Scenarios
+## Questions and Solutions
 
 - Allow ingress connections from backend pods in backend namespace to frontend pods in frontend namespace - > frontend_backend_8080.yaml
 
