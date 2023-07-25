@@ -40,3 +40,27 @@ Create a new Role named 'secret-reader-role' that allows the ServiceAccount 'sam
 
 Create a RoleBinding named 'secret-reader-binding' to bind the 'secret-reader-role' to the 'sam-acct' ServiceAccount within the 'default' namespace.
 ```
+
+- Solution using imperative commands
+
+<details><summary>show</summary>
+<p>
+    
+```bash
+kubectl create serviceaccount sam-acct
+# create the service account
+
+kubectl create role sam-role --verb=create,delete,list --resource=pods,deployments,secrets,configmaps --namespace=default
+# create the role
+
+kubectl create rolebinding sam-rolebinding --role=sam-role --serviceaccount=default:sam-acct
+# create the role binding
+
+# test it
+kubectl auth can-i create pods --as=system:serviceaccount:default:sam-acct
+kubectl auth can-i get pods --as=system:serviceaccount:default:sam-acct
+kubectl auth can-i get secrets --as=system:serviceaccount:default:sam-acct
+```
+
+</p>
+</details>
