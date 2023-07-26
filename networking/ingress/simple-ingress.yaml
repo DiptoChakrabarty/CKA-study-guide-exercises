@@ -23,4 +23,4 @@ spec:
             port: 
               number: 8080
         path: /watch
-        pathType: ImplementationSpecific       
+        pathType: ImplementationSpecific     
