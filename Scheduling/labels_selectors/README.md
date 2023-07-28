@@ -1,8 +1,6 @@
 # CKA commands and files
 
-
-
-### Labels and Services
+## Labels and Services
 
 - Get labels of Pods
 
