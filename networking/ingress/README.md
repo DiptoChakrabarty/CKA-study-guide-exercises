@@ -42,3 +42,41 @@ You have deployed a web application named "my-web-app" in your Kubernetes cluste
 
 Write the YAML manifest for the required Ingress resource with the path rewriting configuration. Save the file as "my-web-app-ingress.yaml".
 ```
+
+- Imperative command example
+```
+You need to configure an Ingress resource to route incoming traffic for a web application named "my-web-app". The application should listen on port 80 and should be accessible using the domain "my-web-app.example.com".
+```
+<details><summary>show</summary>
+<p>
+
+```bash
+# Step 1: Create the Ingress resource
+kubectl create ingress my-web-app-ingress \
+  --rule="my-web-app.example.com/*=my-web-app:80"
+
+```
+</p>
+</details>
+
+- Example of ingress patch
+```
+You are managing a Kubernetes cluster with two web applications, "app-a" and "app-b". The applications need to be accessible using the same domain "my-apps.example.com", but they should respond to different paths. The "app-a" service should be reachable at the path "/appA", and the "app-b" service should be reachable at the path "/appB".
+```
+
+<details><summary>show</summary>
+<p>
+
+```bash
+# Step 1: Create the Ingress resource for app-a with the path "/appA"
+kubectl create ingress my-apps-ingress \
+  --rule="my-apps.example.com/appA=app-a:80"
+
+# Step 2: Add a new rule to the existing Ingress resource for app-b with the path "/appB"
+kubectl patch ingress my-apps-ingress \
+  --patch='{"spec":{"rules":[{"host":"my-apps.example.com","http":{"paths":[{"path":"/appB","pathType":"Prefix","backend":{"service":{"name":"app-b","port":{"number":80}}}}]}}]}}'
+
+```
+</p>
+</details>
+
